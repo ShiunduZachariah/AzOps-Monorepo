@@ -1,0 +1,17 @@
+.dotnet/
+.azurefunctions/
+.nuget/
+.gocache/
+.gomodcache/
+.vs/
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+*.swp
+*.tmp
+src/functions/src/AzOps.Functions/local.settings.json
+.env
+infra/env/.env
+Architecture.txt

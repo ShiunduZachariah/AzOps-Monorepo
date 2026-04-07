@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.0"
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Build
+        shell: pwsh
+        run: .\ops\scripts\Restore-All.ps1
+
+      - name: Compile
+        shell: pwsh
+        run: .\ops\scripts\Build-All.ps1
+
+      - name: Test
+        shell: pwsh
+        run: .\ops\scripts\Test-All.ps1
