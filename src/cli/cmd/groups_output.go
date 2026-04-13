@@ -1,31 +1,23 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"text/tabwriter"
 
-	"github.com/ShiunduZachariah/azopscli/internal/azure"
+	"github.com/ShiunduZachariah/azopscli/internal/models"
 )
 
-func writeResourceGroups(w io.Writer, groups []azure.ResourceGroup, outputFormat string) error {
+func writeResourceGroups(w io.Writer, groups []models.ResourceGroup, outputFormat string) error {
 	switch outputFormat {
 	case "", "plain":
-		tw := tabwriter.NewWriter(w, 0, 4, 2, ' ', 0)
-		if _, err := fmt.Fprintln(tw, "NAME\tLOCATION\tID"); err != nil {
-			return err
-		}
+		rows := make([][]string, 0, len(groups))
 		for _, group := range groups {
-			if _, err := fmt.Fprintf(tw, "%s\t%s\t%s\n", group.Name, group.Location, group.ID); err != nil {
-				return err
-			}
+			rows = append(rows, []string{group.Name, group.Location, group.ID})
 		}
-		return tw.Flush()
+
+		return writeTable(w, []string{"NAME", "LOCATION", "ID"}, rows)
 	case "json":
-		enc := json.NewEncoder(w)
-		enc.SetIndent("", "  ")
-		return enc.Encode(groups)
+		return writeJSON(w, groups)
 	default:
 		return fmt.Errorf("unsupported output format %q", outputFormat)
 	}

@@ -23,8 +23,9 @@ func run(ctx context.Context) error {
 	}
 
 	root := cmd.NewRootCommand(cmd.Dependencies{
-		Config:         &application.Config,
-		ResourceGroups: application.ResourceGroups,
+		Config:          &application.Config,
+		ResourceGroups:  application.ResourceGroups,
+		VirtualMachines: application.VirtualMachines,
 	})
 	return root.Execute()
 }

@@ -5,18 +5,23 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ShiunduZachariah/azopscli/internal/azure"
 	"github.com/ShiunduZachariah/azopscli/internal/config"
+	"github.com/ShiunduZachariah/azopscli/internal/models"
 	"github.com/spf13/cobra"
 )
 
 type ResourceGroupLister interface {
-	ListResourceGroups(ctx context.Context, subscriptionID string) ([]azure.ResourceGroup, error)
+	ListResourceGroups(ctx context.Context, subscriptionID string) ([]models.ResourceGroup, error)
+}
+
+type VirtualMachineLister interface {
+	ListVirtualMachines(ctx context.Context, subscriptionID string) ([]models.VirtualMachine, error)
 }
 
 type Dependencies struct {
-	Config         *config.Config
-	ResourceGroups ResourceGroupLister
+	Config          *config.Config
+	ResourceGroups  ResourceGroupLister
+	VirtualMachines VirtualMachineLister
 }
 
 func NewRootCommand(deps Dependencies) *cobra.Command {
@@ -41,6 +46,7 @@ func NewRootCommand(deps Dependencies) *cobra.Command {
 
 	root.AddCommand(newHealthCommand())
 	root.AddCommand(newGroupsCommand(cfg, deps.ResourceGroups))
+	root.AddCommand(newVirtualMachinesCommand(cfg, deps.VirtualMachines))
 
 	root.PersistentPreRunE = func(cmd *cobra.Command, _ []string) error {
 		cfg.Normalize()
