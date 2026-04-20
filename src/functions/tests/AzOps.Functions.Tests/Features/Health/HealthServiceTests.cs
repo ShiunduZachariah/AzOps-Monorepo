@@ -1,4 +1,4 @@
-using AzOps.Infrastructure.Features.Health;
+using AzOps.Core.Features.Health;
 
 namespace AzOps.Functions.Tests.Features.Health;
 

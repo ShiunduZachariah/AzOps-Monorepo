@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.21.0" />
+    <PackageReference Include="Azure.ResourceManager.Resources" Version="1.11.2" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.10.0" />
     <ProjectReference Include="..\AzOps.Core\AzOps.Core.csproj" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.3" />
   </ItemGroup>
 
 </Project>

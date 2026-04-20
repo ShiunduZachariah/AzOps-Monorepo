@@ -1,18 +1,23 @@
 using AzOps.Core.Features.Health;
+using AzOps.Functions.Features.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using System.Net;
+using Microsoft.Extensions.Logging;
 
 namespace AzOps.Functions.Features.Health;
 
-public sealed class HealthFunction(IHealthService healthService)
+public sealed class HealthFunction(IHealthService healthService, ILogger<HealthFunction> logger)
 {
     [Function("Health")]
-    public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health")] HttpRequestData request)
+    public Task<HttpResponseData> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health")] HttpRequestData request,
+        FunctionContext context)
     {
-        var response = request.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(healthService.GetStatus());
-        return response;
+        return FunctionExecution.ExecuteAsync(
+            request,
+            logger,
+            operationName: "health",
+            handler: _ => Task.FromResult(healthService.GetStatus()),
+            cancellationToken: context.CancellationToken);
     }
 }

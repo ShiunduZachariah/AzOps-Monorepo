@@ -1,4 +1,5 @@
 using AzOps.Infrastructure.DependencyInjection;
+using AzOps.Infrastructure.Configuration;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,7 +14,14 @@ builder.Services.Configure<JsonSerializerOptions>(options =>
     options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
-builder.Services.AddAzOpsInfrastructure();
+var azOpsOptions = new AzOpsFunctionsOptions
+{
+    SubscriptionId = builder.Configuration["AZOPS_SUBSCRIPTION_ID"] ?? builder.Configuration["AZURE_SUBSCRIPTION_ID"],
+    KeyVaultName = builder.Configuration["AZOPS_KEY_VAULT_NAME"],
+    KeyVaultUri = builder.Configuration["AZOPS_KEY_VAULT_URI"]
+};
+
+builder.Services.AddAzOpsInfrastructure(azOpsOptions);
 
 var app = builder.Build();
 app.Run();

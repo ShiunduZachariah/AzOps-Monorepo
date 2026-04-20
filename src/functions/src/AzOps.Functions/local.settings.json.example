@@ -3,6 +3,8 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "AZOPS_KEY_VAULT_NAME": ""
+    "AZOPS_SUBSCRIPTION_ID": "",
+    "AZOPS_KEY_VAULT_NAME": "",
+    "AZOPS_KEY_VAULT_URI": ""
   }
 }

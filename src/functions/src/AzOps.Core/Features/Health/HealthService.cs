@@ -1,6 +1,4 @@
-using AzOps.Core.Features.Health;
-
-namespace AzOps.Infrastructure.Features.Health;
+namespace AzOps.Core.Features.Health;
 
 public sealed class HealthService : IHealthService
 {
